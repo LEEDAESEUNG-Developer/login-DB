@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragment/title :: title(~{::title})">
+    <meta charset="UTF-8">
+    <title>회원가입</title>
+</head>
+<body>
+<form action method="post" th:object="${form}">
+    <input type="text" th:field="*{id}">
+    <input type="text" th:field="*{pwd}">
+    <button type="submit">회원가입</button>
+</form>
+</body>
+</html>
