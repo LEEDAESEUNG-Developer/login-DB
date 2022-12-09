@@ -1,12 +1,35 @@
-version: "3"
 services:
   mysql:
+    container_name: login-db
     image: mysql
-    volumes_from:
-      - dockerVolume02
+    volumes:
+      - mysql_DB:/var/lib/mysql
     command: --default-authentication-plugin=mysql_native_password
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: toor
     ports:
       - "3307:3306"
+
+  application:
+    container_name: application
+    working_dir: /app
+    volumes:
+      - /Users/lee-macbook/Desktop/docker-compose/loginDB/build/libs:/app/
+    restart: always
+    build:
+      dockerfile: ./dockerfile
+    ports:
+      - "80:8080"
+    depends_on:
+      - mysql
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/dockerLogin?serverTimezone=Asia/Seoul
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASORUCE_PASSWORD: toor
+
+
+
+volumes:
+  mysql_DB:
+    external: true
