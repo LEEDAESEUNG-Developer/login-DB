@@ -1,10 +1,10 @@
 package com.logindb.logindb.exception;
 
-public class MemberCreateError extends Exception{
+public class MemberCreateException extends Exception{
 
     private static final String message = "중복회원입니다.";
 
-    public MemberCreateError() {
+    public MemberCreateException() {
         super(message);
     }
 }
