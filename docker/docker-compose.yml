@@ -15,7 +15,8 @@ services:
     container_name: application
     working_dir: /app
     volumes:
-      - /Users/lee-macbook/Desktop/docker-compose/loginDB/build/libs:/app/
+#      - /Users/lee-macbook/Desktop/docker-compose/loginDB/build/libs:/app/
+      - ../build/libs:/app/
     restart: always
     build:
       dockerfile: ./dockerfile
