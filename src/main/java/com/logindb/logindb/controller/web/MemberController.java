@@ -8,15 +8,12 @@ import com.logindb.logindb.dto.MemberInsertDto;
 import com.logindb.logindb.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.web.servlet.server.Session;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.SessionAttribute;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
@@ -35,15 +32,15 @@ public class MemberController {
     }
 
     @PostMapping("login")
-    public String login(@ModelAttribute LoginForm loginForm, HttpServletResponse response, HttpSession session) throws IOException {
+    public String login(@ModelAttribute LoginForm loginForm, HttpSession session) throws IOException {
 
         LoginDto loginDto = new LoginDto();
         loginDto.setId(loginForm.getId());
         loginDto.setPwd(loginForm.getPwd());
 
         Member findMember = memberService.login(loginDto);
-        if(findMember == null) return "redirect:/";
 
+        if(findMember.getId().isBlank()) return "redirect:/";
 
         session.setAttribute("member", findMember);
 
@@ -63,9 +60,9 @@ public class MemberController {
     }
 
     @GetMapping("logout")
-    public void logout(HttpServletResponse response, HttpSession session) throws IOException {
+    public String logout( HttpSession session) throws IOException {
         session.invalidate();
-        response.sendRedirect("/");
+        return "redirect:/";
     }
 
 

@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Mapper
 @Repository
@@ -25,11 +26,11 @@ public interface MemberMapper extends MemberRepository {
 
     //회원 조회 (단수)
     @Select("select * from member where id = #{id} and pwd = #{pwd}")
-    Member findMemberByIdAndPwd(LoginDto dto);
+    Optional<Member> findMemberByIdAndPwd(LoginDto dto);
 
     //회원 조회 아이디만 (단수)
     @Select("select id from member where id = #{id}")
-    Member findMemberById(@Param("id") String id);
+    Optional<Member> findMemberById(@Param("id") String id);
 
 
     //회원 가입

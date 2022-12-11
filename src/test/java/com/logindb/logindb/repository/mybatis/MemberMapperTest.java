@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
+import java.util.Optional;
 
 @SpringBootTest
 class MemberMapperTest {
@@ -27,19 +28,33 @@ class MemberMapperTest {
 
     @DisplayName("회원 아이디 조회")
     @Test
-    void findMemberById(){
+    void findMemberById_O(){
         LoginDto loginDto = new LoginDto();
 
         loginDto.setId("aaaa");
         loginDto.setPwd("1234");
 
-        Member memberById = memberMapper.findMemberByIdAndPwd(loginDto);
+        Optional<Member> memberById = memberMapper.findMemberByIdAndPwd(loginDto);
         System.out.println("memberById = " + memberById);
+        Assertions.assertThat(memberById.isEmpty()).isFalse();
+    }
+
+    @DisplayName("회원 아이디 조회 안됐을때")
+    @Test
+    void findMemberById_X(){
+        LoginDto loginDto = new LoginDto();
+
+        loginDto.setId(null);
+        loginDto.setPwd(null);
+
+        Optional<Member> memberById = memberMapper.findMemberByIdAndPwd(loginDto);
+        Assertions.assertThat(memberById.isEmpty()).isTrue();
     }
 
     @DisplayName("회원가입")
     @Test
     void register(){
+        // 회원가입
         MemberInsertDto memberInsertDto = new MemberInsertDto();
 
         memberInsertDto.setId("bbbb");
@@ -47,14 +62,15 @@ class MemberMapperTest {
 
         memberMapper.insertMember(memberInsertDto);
 
+        // 로그인
         LoginDto loginDto = new LoginDto();
 
-        loginDto.setId("bbbb");
-        loginDto.setPwd("1234");
+        loginDto.setId(memberInsertDto.getId());
+        loginDto.setPwd(memberInsertDto.getPwd());
 
-        Member memberById = memberMapper.findMemberByIdAndPwd(loginDto);
+        Member memberByIdAndPwd = memberMapper.findMemberByIdAndPwd(loginDto).get();
 
-        Assertions.assertThat(memberInsertDto.getId()).isEqualTo(loginDto.getId());
+        Assertions.assertThat(memberByIdAndPwd.getId()).isEqualTo(loginDto.getId());
     }
 
 }

@@ -3,9 +3,9 @@ package com.logindb.logindb.repository;
 import com.logindb.logindb.domain.Member;
 import com.logindb.logindb.dto.LoginDto;
 import com.logindb.logindb.dto.MemberInsertDto;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface MemberRepository {
 
@@ -13,10 +13,10 @@ public interface MemberRepository {
     List<Member> findMemberAll();
 
     //회원 조회
-    Member findMemberByIdAndPwd(LoginDto LoginDto);
+    Optional<Member> findMemberByIdAndPwd(LoginDto LoginDto);
 
     //회원 조회 아이디만 (단수)
-    Member findMemberById(String id);
+    Optional<Member> findMemberById(String id);
 
     //회원 가입
     void insertMember(MemberInsertDto memberInsertDto);
